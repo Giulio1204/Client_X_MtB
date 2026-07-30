@@ -1,0 +1,820 @@
+# Client_X_MtB
+[index3.html.html](https://github.com/user-attachments/files/30559425/index3.html.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mind the Bridge — Startup Scouting Executive Dashboard</title>
+<style>
+  :root{
+    --navy:#081C89; --navy-bg:#0F1B5C; --navy-bg2:#1B2A75; --navy-bg3:#071A7A;
+    --cyan:#0BBBFF; --blue:#2E7FE8; --periwinkle:#ABB1D4;
+    --orange:#E79348; --teal:#1C9099; --green:#04993B; --green-light:#ABCF6D;
+    --red:#B22B2C; --amber:#C77A00;
+    --grey:#F4F6F8; --border:#E1E5EC; --dark:#1A1A1A; --muted:#5B6B79;
+    --lgreen:#E8F6EE; --lred:#FBE4E2; --lamber:#FDF0DA; --lblue:#E7F4FE;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,'Segoe UI',Arial,system-ui,sans-serif;background:#fff;color:var(--dark);}
+  a{color:var(--blue);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .wrap{max-width:1480px;margin:0 auto;padding:0 24px 60px;}
+
+  /* ============ HEADER — cover-page diagonal treatment ============ */
+  header{position:relative;overflow:hidden;color:#fff;
+    background:linear-gradient(115deg, var(--navy-bg3) 0%, var(--navy-bg) 38%, var(--navy-bg2) 62%, var(--periwinkle) 100%);
+    padding:26px 24px 30px;}
+  header::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(115deg, transparent 55%, rgba(255,255,255,.06) 56%, transparent 58%);}
+  .brand-row{display:flex;align-items:center;gap:10px;position:relative;z-index:1;}
+  .arc-logo{flex:0 0 auto;}
+  .brand-name a{color:#fff;font-weight:800;font-size:15px;letter-spacing:.01em;}
+  .brand-tag{font-size:11px;color:#B9CCF2;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-left:2px;}
+  h1{font-size:32px;font-weight:800;margin:16px 0 8px;letter-spacing:-0.01em;position:relative;z-index:1;max-width:820px;}
+  .meta{font-size:12.5px;color:#C9D6E3;display:flex;gap:18px;flex-wrap:wrap;position:relative;z-index:1;}
+  .meta b{color:#fff;font-weight:700;}
+
+  /* ============ SECTION HEADERS — report chapter-heading style ============ */
+  .section{margin-top:34px;}
+  .section .eyebrow{font-size:10.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .section .eyebrow::before{content:"";width:14px;height:14px;background:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22><path d=%22M4 16 A8 8 0 0 1 20 16%22 stroke=%22%230BBBFF%22 stroke-width=%223%22 fill=%22none%22 stroke-linecap=%22round%22/></svg>') no-repeat center/contain;}
+  .section h2{font-size:19px;font-weight:800;color:var(--navy);margin:0 0 10px;letter-spacing:-.01em;}
+  .section .bar{width:150px;height:5px;border-radius:3px;margin-bottom:16px;
+    background:linear-gradient(90deg, var(--navy) 0%, var(--cyan) 100%);}
+  .section .body{padding:0;}
+  .note{font-size:12.5px;color:var(--muted);font-style:italic;margin:0 0 12px;}
+  .note.alert{color:var(--teal);font-style:normal;font-weight:600;}
+
+  /* ============ KPI cards ============ */
+  .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;}
+  .kpi{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;
+       box-shadow:0 1px 3px rgba(11,29,110,.06);}
+  .kpi .icon{width:34px;height:34px;margin:0 auto 8px;border-radius:50%;background:var(--lblue);
+    display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:16px;font-weight:800;}
+  .kpi .val{font-size:28px;font-weight:800;color:var(--navy);line-height:1;}
+  .kpi .lab{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;margin-top:8px;}
+  .kpi .sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+  /* ============ filters ============ */
+  .filter-bar{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:12px;align-items:end;}
+  .filter-bar label{display:block;font-size:10.5px;font-weight:700;color:#fff;background:var(--navy);
+      padding:6px 10px;border-radius:6px 6px 0 0;letter-spacing:.02em;text-transform:uppercase;}
+  .filter-bar select{width:100%;padding:9px 10px;border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px;
+      font-family:inherit;font-size:13px;background:#fff;color:var(--dark);font-weight:600;}
+  .filter-bar button{padding:10px 16px;background:var(--cyan);color:#04294f;border:none;border-radius:6px;
+      font-weight:700;font-size:12.5px;cursor:pointer;height:38px;}
+  .filter-bar button:hover{background:#31c6ff;}
+  .match-line{margin-top:14px;background:var(--lblue);border:1px solid #C8E4F9;border-radius:8px;padding:10px 14px;
+      font-size:13.5px;font-weight:700;color:var(--navy);}
+
+  /* ============ chart captions (FIGURE style) + charts ============ */
+  .fig-caption{font-size:10px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:2px;}
+  .fig-title{font-size:12.5px;color:var(--navy);font-weight:800;margin:0 0 2px;}
+  .fig-source{font-size:10px;color:var(--muted);font-style:italic;margin-bottom:10px;}
+  .chart-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;}
+  .chart-grid3{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:20px;margin-top:20px;}
+  .chart-box{border:1px solid var(--border);border-radius:12px;padding:16px;}
+  .chart-box svg{width:100%;height:auto;display:block;}
+  .legend{display:flex;gap:16px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-weight:600;}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block;}
+  .legend i.dashed{background:repeating-linear-gradient(45deg,#9AA5B1,#9AA5B1 2px,transparent 2px,transparent 4px);border:1px dashed #9AA5B1;}
+  .bars{display:flex;flex-direction:column;gap:11px;margin-top:4px;}
+  .bar-row{display:grid;grid-template-columns:110px 1fr 30px;align-items:center;gap:8px;font-size:12px;}
+  .bar-row .track{height:16px;background:#EEF1F4;border-radius:20px;overflow:hidden;}
+  .bar-row .fill{height:100%;border-radius:20px;}
+
+  /* ============ startup profile "sticky notes" ============ */
+  .profile-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 18px;padding-top:6px;}
+  .profile-card{position:relative;background:#fff;border:1px solid var(--border);border-radius:4px;
+    box-shadow:0 3px 10px rgba(20,30,90,.09);padding:16px 14px 14px;display:flex;flex-direction:column;gap:8px;
+    transition:transform .15s ease;}
+  .profile-card:hover{transform:translateY(-3px);}
+  .profile-card.inactive{opacity:.7;}
+  .tag{position:absolute;top:-14px;left:14px;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.02em;
+    padding:5px 12px 5px 10px;border-radius:2px;transform:rotate(-2deg);
+    box-shadow:0 2px 4px rgba(0,0,0,.18);}
+  .tag::before{content:"";position:absolute;left:-4px;top:6px;width:8px;height:8px;border-radius:50%;
+    background:rgba(255,255,255,.65);box-shadow:0 1px 2px rgba(0,0,0,.3);}
+  .tag.navy{background:var(--navy-bg2);}
+  .tag.orange{background:var(--orange);}
+  .tag.teal{background:var(--teal);}
+  .profile-card h4{margin:10px 0 0;font-size:14.5px;}
+  .profile-card h4 a{color:var(--navy);font-weight:800;}
+  .profile-badges{display:flex;flex-wrap:wrap;gap:5px;}
+  .badge{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--grey);color:var(--muted);border:1px solid var(--border);}
+  .profile-desc{font-size:11.5px;color:var(--dark);line-height:1.5;flex:1;}
+  .profile-why{font-size:10.5px;color:var(--muted);line-height:1.5;border-top:1px dashed var(--border);padding-top:8px;}
+  .profile-card .visit{font-size:11px;font-weight:700;margin-top:2px;}
+
+  /* ============ tables ============ */
+  .table-scroll{max-height:560px;overflow:auto;border:1px solid var(--border);border-radius:10px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{background:var(--navy);color:#fff;font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;
+     padding:10px 8px;text-align:left;cursor:pointer;user-select:none;position:sticky;top:0;z-index:2;}
+  th:hover{background:var(--navy-bg2);}
+  td{padding:10px 8px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tbody tr:nth-child(even){background:#FBFCFE;}
+  tbody tr:hover{background:var(--lblue);}
+  tr.dim{opacity:.28;}
+  .pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+  .pill.priority{background:var(--lgreen);color:var(--green);}
+  .pill.second{background:var(--lblue);color:var(--blue);}
+  .pill.watch{background:var(--lamber);color:var(--amber);}
+  .pill.inactive{background:#ECEFF1;color:var(--muted);}
+  .bar-cell{display:flex;align-items:center;gap:8px;}
+  .bar-track{flex:1;height:11px;background:#EEF1F4;border-radius:6px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:6px;}
+  .bar-num{font-weight:700;font-size:12px;min-width:24px;text-align:right;}
+  .status-active{color:var(--green);font-weight:700;}
+  .status-inactive{color:var(--muted);font-weight:700;}
+  .rag{display:inline-block;padding:4px 12px;border-radius:5px;font-weight:700;font-size:11.5px;min-width:64px;text-align:center;}
+  .rag.green{background:var(--lgreen);color:var(--green);}
+  .rag.amber{background:var(--lamber);color:var(--amber);}
+  .rag.red{background:var(--lred);color:var(--red);}
+  .rag.pending{background:#ECEFF1;color:var(--muted);}
+
+  /* rank table specifics */
+  .rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;
+    font-weight:800;font-size:12px;color:#fff;background:var(--navy);}
+  .rank-badge.g1{background:linear-gradient(135deg,#F4C24B,#C98A1D);}
+  .rank-badge.g2{background:linear-gradient(135deg,#C9CFD6,#8B95A1);}
+  .rank-badge.g3{background:linear-gradient(135deg,#D89A63,#A15E2B);}
+  .company-cell .cname{font-weight:800;color:var(--navy);font-size:13px;}
+  .company-cell .csub{font-size:10.5px;color:var(--muted);margin-top:2px;}
+  .score-chip{display:inline-flex;align-items:center;justify-content:center;min-width:38px;padding:4px 8px;border-radius:8px;
+    font-weight:800;font-size:13px;color:#fff;}
+  .score-chip.s-high{background:var(--green);}
+  .score-chip.s-mid{background:var(--blue);}
+  .score-chip.s-low{background:var(--amber);}
+  .score-chip.s-na{background:#B9C2CC;}
+
+  /* status dropdown (engagement tracker) */
+  .status-select{font-family:inherit;font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:20px;border:none;
+    cursor:pointer;appearance:none;-webkit-appearance:none;background-repeat:no-repeat;background-position:right 8px center;
+    background-size:9px;padding-right:26px;
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 6%22><path d=%22M1 1l4 4 4-4%22 stroke=%22%235B6B79%22 stroke-width=%221.4%22 fill=%22none%22/></svg>');}
+  .status-select.st-notstarted{background-color:var(--lred);color:var(--red);}
+  .status-select.st-contacted{background-color:var(--lamber);color:var(--amber);}
+  .status-select.st-progress{background-color:var(--lamber);color:var(--amber);}
+  .status-select.st-scheduled{background-color:var(--lblue);color:var(--blue);}
+  .status-select.st-replied{background-color:var(--lblue);color:var(--blue);}
+  .status-select.st-done{background-color:var(--lgreen);color:var(--green);}
+  .status-select.st-noresponse{background-color:#ECEFF1;color:var(--muted);}
+
+  .traffic{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+  .traffic.not-started{background:var(--lred);color:var(--red);}
+  .traffic.overdue{background:var(--lred);color:var(--red);}
+  .traffic.ontrack{background:var(--lgreen);color:var(--green);}
+  .traffic.na{background:#ECEFF1;color:var(--muted);}
+
+  /* chart legend list (numbered) */
+  .chart-legend-list{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+  .chart-legend-list .li{display:flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--dark);}
+  .chart-legend-list .num{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;
+    color:#fff;font-size:9.5px;font-weight:800;flex:0 0 auto;}
+  .chart-legend-list a{color:var(--dark);font-weight:700;}
+  .chart-legend-list a:hover{color:var(--blue);}
+  .chart-legend-list .dissolved-note{color:var(--muted);font-weight:500;font-style:italic;}
+
+
+  .rec-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+  .rec-card{border-radius:10px;padding:18px;font-size:13px;line-height:1.55;}
+  .rec-card h4{margin:0 0 8px;font-size:14px;}
+  .rec-card h4 a{font-weight:800;}
+  .rec-card.p1{background:var(--lgreen);border:1px solid #BFE3CC;}
+  .rec-card.p2{background:var(--lblue);border:1px solid #C8E4F9;}
+  .rec-card.p3{background:var(--grey);border:1px solid var(--border);}
+
+  .alert-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+  .alert-row:last-child{border-bottom:none;}
+  .alert-tag{flex:0 0 190px;font-weight:700;font-size:12.5px;}
+  .alert-text{flex:1;font-size:12.5px;color:var(--dark);}
+  .alert-row.critical .alert-tag{color:var(--red);}
+  .alert-row.update .alert-text{color:#7a5200;}
+
+  .methodology li{font-size:12.5px;color:var(--dark);margin-bottom:9px;line-height:1.5;}
+  footer{text-align:center;color:var(--muted);font-size:11.5px;padding:30px 0 6px;border-top:1px solid var(--border);margin-top:30px;}
+  footer a{color:var(--muted);text-decoration:underline;}
+
+  @media (max-width:1100px){
+    .kpi-grid{grid-template-columns:repeat(3,1fr);}
+    .filter-bar{grid-template-columns:repeat(2,1fr);}
+    .chart-grid,.chart-grid3,.rec-grid{grid-template-columns:1fr;}
+    .profile-grid{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap" style="padding:0;">
+    <div class="brand-row">
+      <svg class="arc-logo" width="30" height="30" viewBox="0 0 24 24"><path d="M3 17 A9 9 0 0 1 21 17" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M6.5 17 A5.5 5.5 0 0 1 17.5 17" stroke="#0BBBFF" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>
+      <span class="brand-name"><a href="https://mindthebridge.com" target="_blank" rel="noopener">Mind the Bridge</a></span>
+      <span class="brand-tag">Corporate Advisory</span>
+    </div>
+    <h1>Startup Scouting — Executive Dashboard</h1>
+    <div class="meta">
+      <span><b>Client:</b> Client X (Large-scale energy infrastructure operator, End-of-Life Asset Management)</span>
+      <span><b>Prepared for:</b> Chief Innovation Officer</span>
+      <span><b>Data as of:</b> 30 Jul 2026 (live market check)</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- KPI SNAPSHOT -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Portfolio Snapshot</h2>
+    <div class="bar"></div>
+    <div class="body"><div class="kpi-grid" id="kpiGrid"></div></div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Filter Controls</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <div class="filter-bar">
+        <div><label>Technology Area</label><select id="f-area"></select></div>
+        <div><label>Country</label><select id="f-country"></select></div>
+        <div><label>TRL Band</label><select id="f-trl"></select></div>
+        <div><label>Funding Stage</label><select id="f-stage"></select></div>
+        <div><label>Recommendation Status</label><select id="f-rec"></select></div>
+        <button id="resetBtn" type="button">Reset filters</button>
+      </div>
+      <div class="match-line" id="matchLine"></div>
+    </div>
+  </div>
+
+  <!-- STARTUP PROFILES -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>The Startups — deal flow at a glance</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <p class="note">Click any company name to open its official website in a new tab.</p>
+      <div class="profile-grid" id="profileGrid"></div>
+    </div>
+  </div>
+
+  <!-- VISUAL ANALYTICS -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Portfolio Visual Analytics</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <p class="note">Charts use numbered markers for clarity — full company names are listed in the legend under each chart. Topolytics (marker with a dashed outline) is included in every chart alongside the rest of the portfolio; see Data Currency Alerts for its current status.</p>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="fig-caption">Figure 1</div>
+          <div class="fig-title">Strategic Fit vs. Deployment Readiness (bubble size = TRL)</div>
+          <div class="fig-source">Source: Mind the Bridge — live dashboard data</div>
+          <div id="bubbleChart"></div>
+          <div class="chart-legend-list" id="bubbleLegend"></div>
+        </div>
+        <div class="chart-box">
+          <div class="fig-caption">Figure 2</div>
+          <div class="fig-title">Portfolio Matrix — Fit vs. Pilot Readiness</div>
+          <div class="fig-source">Source: Mind the Bridge — live dashboard data</div>
+          <div id="matrixChart"></div>
+          <div class="chart-legend-list" id="matrixLegend"></div>
+        </div>
+      </div>
+      <div class="chart-grid3">
+        <div class="chart-box">
+          <div class="fig-caption">Figure 3</div><div class="fig-title">Scouting Mix</div>
+          <div class="fig-source">Source: Mind the Bridge</div>
+          <div id="donutChart"></div>
+        </div>
+        <div class="chart-box">
+          <div class="fig-caption">Figure 4</div><div class="fig-title">Decision Funnel — stage counts</div>
+          <div class="fig-source">Source: Mind the Bridge</div>
+          <div class="bars" id="funnelChart"></div>
+        </div>
+        <div class="chart-box">
+          <div class="fig-caption">Figure 5</div><div class="fig-title">Startups by HQ Country</div>
+          <div class="fig-source">Source: Mind the Bridge</div>
+          <div class="bars" id="geoChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RANKING TABLE -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Startup Ranking — Weighted Score</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <p class="note">60% Strategic Fit / 40% Deployment Readiness — weighted toward deployability because Client X's stated bottleneck is execution capacity, not visibility. Click a column header to sort; rows outside the current filter selection are dimmed, not hidden.</p>
+      <div class="table-scroll">
+        <table id="rankTable">
+          <thead>
+            <tr>
+              <th data-key="rank">Rank</th><th data-key="name">Company</th>
+              <th data-key="fitScore">Strategic Fit</th><th data-key="readiness">Deploy. Readiness</th>
+              <th data-key="weighted">Weighted Score</th><th data-key="recStatus">Recommendation</th>
+              <th data-key="active">Status</th><th>Profile</th><th>Market Check Note</th>
+            </tr>
+          </thead>
+          <tbody id="rankBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENGAGEMENT TRACKER -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Engagement Tracker</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <table>
+        <thead><tr><th>Priority</th><th>Company</th><th>Owner</th><th>Status</th><th>First Outreach</th>
+          <th>Follow-up Due</th><th>Overdue?</th><th>Last Contact</th><th>Next Action</th></tr></thead>
+        <tbody id="engBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RISK PANEL -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Risk Panel — Priority Candidates</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <table>
+        <thead><tr><th>Risk Category</th><th id="riskHead1"></th><th id="riskHead2"></th><th>Basis</th></tr></thead>
+        <tbody id="riskBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RECOMMENDATION -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Recommendation — Top 2 Priority Startups</h2>
+    <div class="bar"></div>
+    <div class="body"><div class="rec-grid" id="recGrid"></div></div>
+  </div>
+
+  <!-- DATA CURRENCY ALERTS -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Data Currency Alerts — Live Market Check (30 Jul 2026)</h2>
+    <div class="bar"></div>
+    <div class="body">
+      <p class="note">Every company was re-checked against live sources on 30 Jul 2026 while building this dashboard, not just pulled from the original scouting file.</p>
+      <div id="alertsList"></div>
+    </div>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div class="section">
+    <div class="eyebrow">Mind the Bridge · Startup Scouting Dashboard</div>
+    <h2>Methodology, Data Dictionary &amp; Use of AI</h2>
+    <div class="bar"></div>
+    <div class="body methodology"><ul id="methodList"></ul></div>
+  </div>
+
+  <footer>
+    <a href="https://mindthebridge.com" target="_blank" rel="noopener">Mind the Bridge</a> — Corporate Advisory Team ·
+    Startup Scouting Executive Dashboard · Confidential, prepared for Client X's CIO
+  </footer>
+</div>
+
+<script>
+/* Zero external dependencies: no CDN, no web fonts, no chart library.
+   All charts are inline SVG / CSS bars computed from the data. */
+
+const RAW = [
+  {name:"Excess Materials Exchange", short:"EME", city:"Amsterdam", country:"Netherlands", area:"Knowing",
+   trlBand:"7-8", trlMid:7.5, founded:2017, stage:"Series A", composite:2.4, proximity:3, integration:2,
+   finalStatus:"Second Wave", active:true,
+   website:"https://excessmaterialsexchange.com",
+   desc:"B2B digital marketplace that profiles a company's excess materials (composition, origin, toxicity, deconstructability) and matches them to the highest-value reuse route instead of disposal.",
+   why:"This is Client X's exact stated problem — siloed technical/environmental/economic data blocking the reuse-vs-recycle-vs-disposal decision. Already running at B2B scale (70,000+ tonnes diverted to date).",
+   note:"No change vs. original scouting note."},
+  {name:"Circularise", short:"Circularise", city:"The Hague", country:"Netherlands", area:"Knowing",
+   trlBand:"6-7 (est.)", trlMid:6.5, founded:2016, stage:"Series A", composite:2.0, proximity:3, integration:1,
+   finalStatus:"Second Wave", active:true,
+   website:"https://www.circularise.com",
+   desc:"Blockchain-based digital product passport and mass-balance software that traces material composition and provenance through complex, multi-tier industrial supply chains.",
+   why:"Adds the traceability layer EME doesn't — cryptographic chain-of-custody for materials moving through multiple handlers. Backed by industrial corporates (Asahi Kasei, Neste, Teijin, Sekisui).",
+   note:"Source TRL cell was corrupted in the original workbook (auto-read as a date) — band re-estimated from stage/peers, not independently sourced. Confirm at first call."},
+  {name:"Topolytics", short:"Topolytics", city:"Edinburgh", country:"United Kingdom", area:"Knowing",
+   trlBand:"n/a (dissolved)", trlMid:6.5, founded:2013, stage:"Dissolved", composite:2.2, proximity:3, integration:2,
+   finalStatus:"Dissolved", active:false,
+   website:"https://www.topolytics.com",
+   desc:"SaaS platform (WasteMap) that ingested, normalised and analysed waste/material transaction data across sites and territories — formerly commissioned by UK DEFRA for a nationwide waste-tracking system.",
+   why:"Originally the strongest 'Knowing' pick at real scale. Now dissolved — kept visible on every chart for transparency on why it was removed, rather than silently dropped.",
+   note:"MARKET UPDATE (30 Jul 2026): Topolytics Ltd entered compulsory liquidation Apr 2024 and was formally DISSOLVED 11 Nov 2025 (Companies House SC458511). Do not contact — kept visible in charts/tables for audit trail only.",
+   critical:true},
+  {name:"RarEarth", short:"RarEarth", city:"Turin area", country:"Italy", area:"Doing",
+   trlBand:"6-7", trlMid:6.5, founded:2023, stage:"Seed", composite:1.8, proximity:1, integration:2,
+   finalStatus:"Longlist / Monitor", active:true,
+   website:"https://www.rarearth.it",
+   desc:"Recovers neodymium-iron-boron (NdFeB) magnets from end-of-life electric motors and is building Italy's first magnet factory from recycled e-motor waste.",
+   why:"Grid infrastructure runs on electric motors that all contain NdFeB magnets — a stream Client X likely can't currently route anywhere but generic scrap. Weakest proximity of the Doing picks.",
+   note:"MARKET UPDATE: closed a €2.6M seed round (Jul 2025, Primo Capital / MITO Tech Ventures) to build its first NdFeB magnet plant — funding thesis strengthened since original scouting."},
+  {name:"CRITICAL.", short:"CRITICAL.", city:"Hoofddorp", country:"Netherlands", area:"Doing",
+   trlBand:"7", trlMid:7.0, founded:2024, stage:"Early-growth", composite:2.4, proximity:2, integration:2,
+   finalStatus:"Priority", active:true,
+   website:"https://critical.green",
+   desc:"Developer/operator of 'Urban Mining Factories' recovering copper and critical raw materials from waste printed circuit boards, solar panels, and a named Electric Motors project line.",
+   why:"The closest match to Client X's actual problem — mixed-material electrical assets that get landfilled because nobody can economically separate them. Two live sites; small team, genuinely unclaimed territory.",
+   note:"No change vs. original scouting note."},
+  {name:"R3 Robotics", short:"R3 Robotics", city:"Karlsruhe (HQ Luxembourg)", country:"Luxembourg", area:"Doing",
+   trlBand:"8", trlMid:8.0, founded:2021, stage:"Series A", composite:2.2, proximity:3, integration:2,
+   finalStatus:"Priority", active:true,
+   website:"https://r3robotics.ai",
+   desc:"AI- and computer-vision-guided robotic platform that automates disassembly of lithium-ion battery packs, e-motors and power electronics via a robots-as-a-service model.",
+   why:"The strongest proximity story on the list — the RaaS option means Client X's heavy assets never have to move. Customer base so far is EV/battery recyclers, genuinely new to Client X.",
+   note:"No change vs. original scouting note."},
+  {name:"Hiro Robotics", short:"Hiro Robotics", city:"Genoa", country:"Italy", area:"Doing",
+   trlBand:"7", trlMid:7.0, founded:2018, stage:"Early-growth", composite:2.0, proximity:2, integration:2,
+   finalStatus:"Longlist / Monitor", active:true,
+   website:"https://www.hirorobotics.com",
+   desc:"Builds automated disassembly systems (TEIA) for disused electronic devices — solar panels, circuit boards and fastener removal already live, with inverters and telecom equipment on the roadmap.",
+   why:"A second, smaller disassembly-robotics option to weigh against R3 — its roadmap (inverters, telecom equipment) sits closer to grid hardware than R3's EV focus.",
+   note:"No change vs. original scouting note."},
+  {name:"DEScycle", short:"DEScycle", city:"Teesside", country:"United Kingdom", area:"Doing",
+   trlBand:"7 (confirmed live)", trlMid:7.0, founded:2013, stage:"Series A", composite:2.2, proximity:3, integration:2,
+   finalStatus:"Second Wave", active:true,
+   website:"https://www.descycle.com",
+   desc:"Modular, low-temperature metals recovery (ionometallurgy using Deep Eutectic Solvents) that recovers precious and base metals from PCBs and other complex e-waste without a centralised smelter.",
+   why:"The direct European, distance-appropriate answer to the PCB/complex-material metal recovery problem — designed for decentralised, rapid deployment near the waste source.",
+   note:"MARKET UPDATE: opened its Teesside demonstration plant (Wilton Centre) in Jul 2026, confirmed TRL7, and secured €10M+ grant funding (Jun 2026) plus Cisco/Mitsubishi partnerships — upgraded from 'demonstration-scale, flagged' to Second Wave on this pass."},
+];
+
+RAW.forEach(c=>{
+  c.fitScore = Math.round(c.composite*100/3);
+  c.readiness = Math.round(((c.proximity/3*100)+(c.integration/3*100))/2);
+  c.weighted = Math.round(0.6*c.fitScore + 0.4*c.readiness);
+  c.recStatus = c.finalStatus;
+});
+const ACTIVE = RAW.filter(c=>c.active);
+const byName = n => RAW.find(c=>c.name===n);
+const linkName = c => `<a href="${c.website}" target="_blank" rel="noopener">${c.name}</a>`;
+
+const ENGAGEMENT = [
+  {priority:1, name:"CRITICAL.", owner:"Giulio Majorano", status:"Not started", firstOutreach:"30-Jul-26",
+   followupDue:"04-Aug-26", overdue:false, lastContact:"31-Jul-26",
+   next:"If no reply by follow-up due date, send follow-up email. If still no reply 5 business days after that, try Niels directly via LinkedIn — team is ~8 people, so email is likely to reach him."},
+  {priority:2, name:"R3 Robotics", owner:"[Colleague MtB name]", status:"Not started", firstOutreach:"—",
+   followupDue:"—", overdue:null, lastContact:"—",
+   next:"LinkedIn message to Antoine Welter first. If no reply within 5 business days, submit via the r3robotics.ai contact form as a fallback, referencing the LinkedIn message."},
+];
+
+const RISKS = [
+  {cat:"Technology", critical:"amber", r3:"green",
+   basis:"CRITICAL.: TRL7, 2 named sites operating/building. R3: TRL8, industrial-scale reference site already running."},
+  {cat:"Logistics", critical:"amber", r3:"green",
+   basis:"CRITICAL.: fixed regional plants — assets must ship to Rotterdam/Frankenberg. R3: robots-as-a-service comes to Client X's site; assets never move."},
+  {cat:"Integration", critical:"amber", r3:"amber",
+   basis:"Both score 2/3 on integration ease (Evaluation Framework) — client-side process change required either way."},
+  {cat:"Commercial Readiness", critical:"green", r3:"red",
+   basis:"CRITICAL.: NPV-positive at the 300t pilot assumption. R3: flat RaaS fee needs ~3x that volume to break even — first call is a feasibility check, not a pilot negotiation."},
+  {cat:"Regulatory", critical:"pending", r3:"pending",
+   basis:"Not assessed in current diligence (no client site/permit data available) — recommend a compliance review once a site is selected for either route."},
+];
+
+const METHODOLOGY = [
+ "Strategic Fit (/100) = composite score from the Evaluation Framework (Cost reduction, Productivity, Proximity, Integration ease, Cost of service — equal-weight avg, 1-3), rescaled to 0-100.",
+ "Deployment / Pilot Readiness (/100) = average of Proximity and Integration ease (1-3 each), rescaled to 0-100. Both are directional consultant judgement on public information, not client or company financial data.",
+ "Weighted Score = 60% Strategic Fit + 40% Deployment Readiness — weighted toward deployability because Client X's stated bottleneck is execution capacity, not visibility. Computed for all 8 companies, including Topolytics, for full comparability.",
+ "TRL bands: where the source gave a range (e.g. '7-8') the midpoint is used for charting; Circularise's TRL cell was corrupted in the source workbook (read as a date) and has been re-estimated — flagged for verification at first call.",
+ "Recommendation Status buckets (Priority / Second Wave / Longlist-Monitor / Dissolved) follow the sequencing logic from Part B and the Evaluation Framework, updated for the 30-Jul-2026 market check (Topolytics dissolved; DEScycle and RarEarth upgraded on new funding/deployment news).",
+];
+
+/* ============================== FILTER STATE ============================== */
+const state = {area:"All", country:"All", trl:"All", stage:"All", rec:"All"};
+function trlTier(mid){
+  if(mid==null) return null;
+  if(mid<7) return "6-7 Emerging";
+  if(mid<8) return "7-8 Deploying";
+  return "8-9 Scaled";
+}
+function matches(c){
+  if(state.area!=="All" && c.area!==state.area) return false;
+  if(state.country!=="All" && c.country!==state.country) return false;
+  if(state.trl!=="All" && trlTier(c.trlMid)!==state.trl) return false;
+  if(state.stage!=="All" && c.stage!==state.stage) return false;
+  if(state.rec!=="All" && c.recStatus!==state.rec) return false;
+  return true;
+}
+function populateSelect(id, values, includeAll=true){
+  const sel=document.getElementById(id);
+  sel.innerHTML="";
+  if(includeAll){ const o=document.createElement("option"); o.value="All"; o.textContent="All"; sel.appendChild(o); }
+  values.forEach(v=>{ const o=document.createElement("option"); o.value=v; o.textContent=v; sel.appendChild(o); });
+}
+populateSelect("f-area",[...new Set(RAW.map(c=>c.area))]);
+populateSelect("f-country",[...new Set(RAW.map(c=>c.country))]);
+populateSelect("f-trl",["6-7 Emerging","7-8 Deploying","8-9 Scaled"]);
+populateSelect("f-stage",[...new Set(RAW.map(c=>c.stage))]);
+populateSelect("f-rec",["Priority","Second Wave","Longlist / Monitor","Dissolved"]);
+["area","country","trl","stage","rec"].forEach(k=>{
+  document.getElementById("f-"+k).addEventListener("change", e=>{ state[k]=e.target.value; render(); });
+});
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  state.area="All"; state.country="All"; state.trl="All"; state.stage="All"; state.rec="All";
+  ["area","country","trl","stage","rec"].forEach(k=> document.getElementById("f-"+k).value="All");
+  render();
+});
+
+/* ============================== STATIC SVG CHART HELPERS ============================== */
+const COL_KNOW = "#2E7FE8", COL_DO = "#1C9099", COL_INACTIVE = "#9AA5B1";
+const svgNS = "http://www.w3.org/2000/svg";
+
+function scatterSVG(points, {quadrant=false} = {}){
+  const W=600, H=380, padL=46, padR=20, padT=18, padB=40;
+  const sx = x => padL + (x/100)*(W-padL-padR);
+  const sy = y => H-padB - (y/100)*(H-padT-padB);
+  let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="${svgNS}">`;
+  for(let t=0;t<=100;t+=20){
+    s += `<line x1="${sx(t)}" y1="${padT}" x2="${sx(t)}" y2="${H-padB}" stroke="#EEF1F4" stroke-width="1"/>`;
+    s += `<line x1="${padL}" y1="${sy(t)}" x2="${W-padR}" y2="${sy(t)}" stroke="#EEF1F4" stroke-width="1"/>`;
+    s += `<text x="${sx(t)}" y="${H-padB+16}" font-size="11" fill="#5B6B79" text-anchor="middle">${t}</text>`;
+    s += `<text x="${padL-8}" y="${sy(t)+4}" font-size="11" fill="#5B6B79" text-anchor="end">${t}</text>`;
+  }
+  s += `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#B9C4CE" stroke-width="1.2"/>`;
+  s += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#B9C4CE" stroke-width="1.2"/>`;
+  s += `<text x="${(padL+W-padR)/2}" y="${H-6}" font-size="11.5" font-weight="700" fill="#5B6B79" text-anchor="middle">Deployment / Pilot Readiness (/100)</text>`;
+  s += `<text x="14" y="${(padT+H-padB)/2}" font-size="11.5" font-weight="700" fill="#5B6B79" text-anchor="middle" transform="rotate(-90 14 ${(padT+H-padB)/2})">Strategic Fit (/100)</text>`;
+  if(quadrant){
+    s += `<line x1="${sx(50)}" y1="${padT}" x2="${sx(50)}" y2="${H-padB}" stroke="#B9C4CE" stroke-width="1" stroke-dasharray="4 4"/>`;
+    s += `<line x1="${padL}" y1="${sy(50)}" x2="${W-padR}" y2="${sy(50)}" stroke="#B9C4CE" stroke-width="1" stroke-dasharray="4 4"/>`;
+  }
+  // simple collision nudge: if two points are within 26px of each other, push the later one outward
+  const placed = [];
+  points.forEach(p=>{
+    let cx=sx(p.x), cy=sy(p.y);
+    const r = p.r||10;
+    for(const q of placed){
+      const dx=cx-q.cx, dy=cy-q.cy, dist=Math.hypot(dx,dy), min=r+q.r+6;
+      if(dist < min && dist > 0){
+        const push = (min-dist);
+        cx += (dx/dist)*push*0.6; cy += (dy/dist)*push*0.6;
+      }
+    }
+    placed.push({cx,cy,r});
+  });
+  points.forEach((p,i)=>{
+    const {cx,cy,r} = placed[i];
+    const dash = p.inactive ? ` stroke-dasharray="4 3"` : "";
+    s += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${p.color}" fill-opacity="${p.inactive?0.5:0.72}" stroke="${p.color}" stroke-width="2"${dash}><title>${p.name}${p.inactive?' (dissolved — historical reference)':''}: Fit ${p.y}, Readiness ${p.x}</title></circle>`;
+    s += `<text x="${cx}" y="${cy+4}" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">${i+1}</text>`;
+  });
+  s += `</svg>`;
+  return s;
+}
+
+function legendListHTML(points){
+  return points.map((p,i)=>{
+    const dissolvedNote = p.inactive ? ` <span class="dissolved-note">(dissolved)</span>` : "";
+    return `<span class="li"><span class="num" style="background:${p.color}">${i+1}</span><a href="${p.website}" target="_blank" rel="noopener">${p.name}</a>${dissolvedNote}</span>`;
+  }).join("");
+}
+
+function donutSVG(segments){
+  const W=220,H=220,cx=W/2,cy=H/2,r=78,stroke=30;
+  const total = segments.reduce((a,s)=>a+s.value,0) || 1;
+  let angle = -90, s = `<svg viewBox="0 0 ${W} ${H}" xmlns="${svgNS}">`;
+  segments.forEach(seg=>{
+    const frac = seg.value/total;
+    const a0 = angle, a1 = angle + frac*360;
+    angle = a1;
+    const large = (a1-a0)>180 ? 1 : 0;
+    const toRad = d=> (d*Math.PI)/180;
+    const x0 = cx + r*Math.cos(toRad(a0)), y0 = cy + r*Math.sin(toRad(a0));
+    const x1 = cx + r*Math.cos(toRad(a1)), y1 = cy + r*Math.sin(toRad(a1));
+    if(seg.value>0){
+      s += `<path d="M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}" fill="none" stroke="${seg.color}" stroke-width="${stroke}" stroke-opacity="${seg.dashed?0.5:1}"><title>${seg.label}: ${seg.value}</title></path>`;
+    }
+  });
+  s += `<text x="${cx}" y="${cy-4}" font-size="24" font-weight="800" fill="#081C89" text-anchor="middle">${total}</text>`;
+  s += `<text x="${cx}" y="${cy+16}" font-size="9.5" fill="#5B6B79" text-anchor="middle">startups shown</text>`;
+  s += `</svg>`;
+  return s;
+}
+
+function barsHTML(rows, maxVal){
+  const max = maxVal || Math.max(1, ...rows.map(r=>r.value));
+  return rows.map(r=>`
+    <div class="bar-row">
+      <div>${r.label}</div>
+      <div class="track"><div class="fill" style="width:${(r.value/max*100).toFixed(1)}%;background:${r.color}"></div></div>
+      <div><b>${r.value}</b></div>
+    </div>`).join("");
+}
+
+/* ============================== RENDER ============================== */
+function kpiCard(icon, val, lab, sub){
+  return `<div class="kpi"><div class="icon">${icon}</div><div class="val">${val}</div><div class="lab">${lab}</div><div class="sub">${sub}</div></div>`;
+}
+function pillClass(s){ return s==="Priority"?"priority":s==="Second Wave"?"second":s==="Longlist / Monitor"?"watch":"inactive"; }
+
+function scoreChipClass(v){
+  if(v==null) return "s-na";
+  if(v>=75) return "s-high";
+  if(v>=55) return "s-mid";
+  return "s-low";
+}
+function rankRowHTML(c, i){
+  const rankCls = i===0?"g1":i===1?"g2":i===2?"g3":"";
+  return `<tr class="${matches(c)?'':'dim'}">
+    <td><span class="rank-badge ${rankCls}">${i+1}</span></td>
+    <td class="company-cell">
+      <div class="cname">${linkName(c)}</div>
+      <div class="csub">${c.country} · ${c.area} · TRL ${c.trlBand} · ${c.stage}</div>
+    </td>
+    <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${c.fitScore}%;background:#2E7FE8"></div></div><span class="bar-num">${c.fitScore}</span></div></td>
+    <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${c.readiness}%;background:#1C9099"></div></div><span class="bar-num">${c.readiness}</span></div></td>
+    <td><span class="score-chip ${scoreChipClass(c.weighted)}">${c.weighted==null?'—':c.weighted}</span></td>
+    <td><span class="pill ${pillClass(c.recStatus)}">${c.recStatus}</span></td>
+    <td class="${c.active?'status-active':'status-inactive'}">${c.active?'Active':'Dissolved'}</td>
+    <td><a href="${c.website}" target="_blank" rel="noopener">Visit site &rarr;</a></td>
+    <td style="max-width:260px;font-size:11.5px;color:var(--muted);">${c.note}</td>
+  </tr>`;
+}
+
+function render(){
+  const filtered = RAW.filter(matches);
+  const filteredActive = filtered.filter(c=>c.active);
+
+  const total = filtered.length;
+  const priority = filteredActive.filter(c=>c.recStatus==="Priority").length;
+  const avgTrl = filteredActive.length ? (filteredActive.reduce((s,c)=>s+c.trlMid,0)/filteredActive.length).toFixed(1) : "—";
+  const avgFit = filteredActive.length ? Math.round(filteredActive.reduce((s,c)=>s+c.fitScore,0)/filteredActive.length) : "—";
+  const countries = new Set(filteredActive.map(c=>c.country)).size;
+  const avgReady = filteredActive.length ? Math.round(filteredActive.reduce((s,c)=>s+c.readiness,0)/filteredActive.length) : "—";
+
+  document.getElementById("kpiGrid").innerHTML =
+    kpiCard("8",total,"Total Startups Scouted","Part A deal flow") +
+    kpiCard("★",priority,"Priority Targets","lead pilot now") +
+    kpiCard("T",avgTrl,"Avg TRL (active)","0-9 scale") +
+    kpiCard("%",avgFit,"Avg Strategic Fit","/100, active only") +
+    kpiCard("◎",countries,"Countries Covered","active startups") +
+    kpiCard("→",avgReady,"Avg Pilot Readiness","/100, active only");
+
+  document.getElementById("matchLine").textContent =
+    `Startups matching current filters: ${total} of ${RAW.length}   |   Active (investable): ${filteredActive.length}   |   1 dissolved, shown for audit trail (see Data Currency Alerts)`;
+
+  const order = {Priority:0,"Second Wave":1,"Longlist / Monitor":2,"Dissolved":3};
+  const sorted = [...RAW].sort((a,b)=> order[a.recStatus]-order[b.recStatus] || (b.trlMid||0)-(a.trlMid||0));
+  document.getElementById("rankBody").innerHTML = sorted.map(rankRowHTML).join("");
+
+  // charts — Topolytics included everywhere, styled grey/dashed via c.active flag
+  const know = filtered.filter(c=>c.area==="Knowing");
+  const doing = filtered.filter(c=>c.area==="Doing");
+  const toPt = (c, sizeMult) => ({x:c.readiness,y:c.fitScore,r:Math.max(9,c.trlMid*sizeMult),name:c.name,short:c.short,website:c.website,
+                                    color:c.active?(c.area==="Knowing"?COL_KNOW:COL_DO):COL_INACTIVE, inactive:!c.active});
+  const bubblePts = [...know.map(c=>toPt(c,2.6)), ...doing.map(c=>toPt(c,2.6))];
+  document.getElementById("bubbleChart").innerHTML = scatterSVG(bubblePts, {quadrant:false});
+  document.getElementById("bubbleLegend").innerHTML = legendListHTML(bubblePts);
+
+  const matrixPts = [...know.map(c=>toPt(c,0)).map(p=>({...p,r:9})), ...doing.map(c=>toPt(c,0)).map(p=>({...p,r:9}))];
+  document.getElementById("matrixChart").innerHTML = scatterSVG(matrixPts, {quadrant:true});
+  document.getElementById("matrixLegend").innerHTML = legendListHTML(matrixPts);
+
+  document.getElementById("donutChart").innerHTML = donutSVG([
+    {label:"Knowing (active)", value:know.filter(c=>c.active).length, color:COL_KNOW},
+    {label:"Doing (active)", value:doing.filter(c=>c.active).length, color:COL_DO},
+    {label:"Dissolved", value:filtered.filter(c=>!c.active).length, color:COL_INACTIVE, dashed:true},
+  ]);
+
+  const rec = filteredActive.filter(c=>c.recStatus==="Priority").length;
+  document.getElementById("funnelChart").innerHTML = barsHTML([
+    {label:"Identified", value:filtered.length, color:"#081C89"},
+    {label:"Shortlisted", value:filtered.length, color:"#1B2A75"},
+    {label:"Contacted", value: ENGAGEMENT.some(e=>e.firstOutreach!=="—")?1:0, color:"#2E7FE8"},
+    {label:"Recommended", value:rec, color:"#0BBBFF"},
+    {label:"Pilot", value:0, color:"#B9E4FA"},
+  ], filtered.length);
+
+  const countryList = ["Netherlands","United Kingdom","Italy","Luxembourg"];
+  document.getElementById("geoChart").innerHTML = barsHTML(
+    countryList.map(ct=>({label:ct, value:filteredActive.filter(c=>c.country===ct).length, color:COL_KNOW})),
+    Math.max(1,...countryList.map(ct=>filteredActive.filter(c=>c.country===ct).length))
+  );
+}
+
+document.querySelectorAll("#rankTable th[data-key]").forEach(th=>{
+  let asc = false;
+  th.addEventListener("click", ()=>{
+    const key = th.dataset.key;
+    const rows = [...RAW].sort((a,b)=>{
+      let va=a[key], vb=b[key];
+      if(va==null && vb==null) return 0;
+      if(va==null) return 1;
+      if(vb==null) return -1;
+      if(typeof va==="string") return asc ? va.localeCompare(vb) : vb.localeCompare(va);
+      return asc ? va-vb : vb-va;
+    });
+    asc = !asc;
+    document.getElementById("rankBody").innerHTML = rows.map(rankRowHTML).join("");
+  });
+});
+
+document.getElementById("profileGrid").innerHTML = RAW.map((c,i)=>{
+  const tagColor = ["navy","orange","teal"][i%3];
+  return `<div class="profile-card">
+    <div class="tag ${tagColor}">${c.recStatus}</div>
+    <h4><a href="${c.website}" target="_blank" rel="noopener">${c.name}</a></h4>
+    <div class="profile-badges">
+      <span class="badge">${c.area}</span><span class="badge">${c.country}</span>
+      <span class="badge">TRL ${c.trlBand}</span><span class="badge">${c.stage}</span>
+      ${c.active ? "" : `<span class="badge" style="background:var(--lred);color:var(--red);border-color:#F3C6C1;">Dissolved Nov 2025</span>`}
+    </div>
+    <div class="profile-desc">${c.desc}</div>
+    <div class="profile-why"><b>Why it's on this list:</b> ${c.why}</div>
+    <div class="visit"><a href="${c.website}" target="_blank" rel="noopener">Visit ${c.short} website &rarr;</a></div>
+  </div>`;
+}).join("");
+
+const STATUS_OPTIONS = [
+  {v:"Not started", cls:"st-notstarted"},
+  {v:"Contacted", cls:"st-contacted"},
+  {v:"In progress", cls:"st-progress"},
+  {v:"Meeting scheduled", cls:"st-scheduled"},
+  {v:"Replied", cls:"st-replied"},
+  {v:"No response", cls:"st-noresponse"},
+  {v:"Done", cls:"st-done"},
+];
+function statusClassFor(v){ return (STATUS_OPTIONS.find(o=>o.v===v)||STATUS_OPTIONS[0]).cls; }
+function statusSelectHTML(current, rowIdx){
+  const opts = STATUS_OPTIONS.map(o=>`<option value="${o.v}" ${o.v===current?"selected":""}>${o.v}</option>`).join("");
+  return `<select class="status-select ${statusClassFor(current)}" data-row="${rowIdx}" onchange="updateEngStatus(this)">${opts}</select>`;
+}
+function updateEngStatus(sel){
+  const idx = +sel.dataset.row;
+  ENGAGEMENT[idx].status = sel.value;
+  STATUS_OPTIONS.forEach(o=>sel.classList.remove(o.cls));
+  sel.classList.add(statusClassFor(sel.value));
+}
+window.updateEngStatus = updateEngStatus;
+
+document.getElementById("engBody").innerHTML = ENGAGEMENT.map((e,idx)=>{
+  const overdueClass = e.overdue===null ? "na" : e.overdue ? "overdue" : "ontrack";
+  const overdueText = e.overdue===null ? "n/a" : e.overdue ? "OVERDUE" : "On track";
+  const c = byName(e.name);
+  return `<tr>
+    <td>${e.priority}</td><td><b>${linkName(c)}</b></td><td>${e.owner}</td>
+    <td>${statusSelectHTML(e.status, idx)}</td>
+    <td>${e.firstOutreach}</td><td>${e.followupDue}</td>
+    <td><span class="traffic ${overdueClass}">${overdueText}</span></td>
+    <td>${e.lastContact}</td>
+    <td style="max-width:340px;">${e.next}</td>
+  </tr>`;
+}).join("");
+
+document.getElementById("riskHead1").innerHTML = linkName(byName("CRITICAL."));
+document.getElementById("riskHead2").innerHTML = linkName(byName("R3 Robotics"));
+document.getElementById("riskBody").innerHTML = RISKS.map(r=>`
+  <tr>
+    <td><b>${r.cat}</b></td>
+    <td><span class="rag ${r.critical}">${r.critical}</span></td>
+    <td><span class="rag ${r.r3}">${r.r3}</span></td>
+    <td style="color:var(--muted);">${r.basis}</td>
+  </tr>`).join("");
+
+document.getElementById("recGrid").innerHTML = `
+  <div class="rec-card p1">
+    <h4>1. ${linkName(byName("CRITICAL."))} — lead the pilot now</h4>
+    Ties for the highest fit score and is NPV-positive on Day 1 at a modest pilot volume (300t/yr). Two named sites already operating/building (Rotterdam PCBs, Frankenberg solar), plus an Electric Motors project line that lines up directly with Client X's asset base. Small team (~8) — genuinely "not yet encountered" territory.
+  </div>
+  <div class="rec-card p2">
+    <h4>2. ${linkName(byName("R3 Robotics"))} — second priority, validate volume first</h4>
+    Strongest proximity story on the list: its robots-as-a-service model brings the disassembly cell to Client X's own site, so heavy decommissioned assets never have to move. Industrial-scale reference facility already running (TRL8). But its flat RaaS subscription needs roughly 3x the assumed pilot volume to break even — first call is a feasibility/pricing check, not a pilot negotiation.
+  </div>
+  <div class="rec-card p3">
+    <h4>Everyone else</h4>
+    <b>Parallel:</b> ${linkName(byName("Excess Materials Exchange"))} ties CRITICAL. on fit, unconstrained by geography/volume.<br>
+    <b>Second wave:</b> ${linkName(byName("Circularise"))}, ${linkName(byName("DEScycle"))} (newly confirmed live — re-approach sooner).<br>
+    <b>Watch:</b> ${linkName(byName("RarEarth"))} (now better-capitalised), ${linkName(byName("Hiro Robotics"))}.<br>
+    <b>Dissolved:</b> ${linkName(byName("Topolytics"))} — see alert below.
+  </div>`;
+
+document.getElementById("alertsList").innerHTML = RAW.map(c=>{
+  const critical = !c.active;
+  const isUpdate = c.note.startsWith("MARKET UPDATE") || critical;
+  return `<div class="alert-row ${critical?'critical':(isUpdate?'update':'')}">
+    <div class="alert-tag">${linkName(c)}</div>
+    <div class="alert-text">${c.note}</div>
+  </div>`;
+}).join("");
+
+document.getElementById("methodList").innerHTML = METHODOLOGY.map(m=>`<li>${m}</li>`).join("");
+
+render();
+</script>
+</body>
+</html>
